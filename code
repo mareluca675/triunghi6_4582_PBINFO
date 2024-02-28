@@ -1,0 +1,77 @@
+#include <fstream>
+
+using namespace std;
+
+int c, n;
+bool ciur[4000005];
+int p[4000005];
+
+int main()
+{
+    ifstream cin("triunghi.in");
+    ofstream cout("triunghi.out");
+
+    cin >> c >> n;
+
+    if(c == 1){
+        unsigned long long patrate = 0;
+
+        for(int i = 1; i <= n; i ++){
+            patrate += i * i;
+        }
+
+        cout << patrate;
+        return 0;
+    }
+    else if(c == 2){
+        unsigned long long patrate = 0;
+        int nivel = 0, zile = 1;
+        int i = 1;
+
+        while(patrate < n){
+            for(int j = 1; patrate < n and j <= i; j += 2){
+                patrate += j;
+                nivel ++;
+            }
+
+            if(patrate >= n){
+                cout << zile << ' ' << nivel;
+                return 0;
+            }
+            else{
+                nivel = 0;
+                zile ++;
+                i += 2;
+            }
+        }
+    }
+    else if(c == 3){
+        if(n == 1){
+            cout << 0;
+        }
+        else{
+            int prime = 0;
+            ciur[1] = 1;
+            
+            for(int i = 2; i <= 4000000; i ++){
+                if(ciur[i] == 0){
+                    for(int j = 2; i * j <= 4000000; j ++){
+                        ciur[i * j] = 1;
+                    }
+                }
+            }
+            
+            for(int i = 1; i <= 4000000; i ++){
+                p[i] = p[i - 1] + (1 - ciur[i]);
+            }
+            
+            for(int i = 1; i <= n; i ++){
+                prime += p[i * i];
+            }
+                
+            cout << prime;
+        }
+    }
+
+    return 0;
+}
